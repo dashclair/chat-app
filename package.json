@@ -15,7 +15,8 @@
     "@headlessui/react": "^2.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.4.1",
