@@ -1,25 +1,44 @@
 import { Button, Input } from '@headlessui/react';
-import { ChangeEvent, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+type TodoInput = {
+  todo: string;
+};
 
 export const ToDoDashboard = () => {
-  const [value, setValue] = useState('');
+  const { register, handleSubmit } = useForm<TodoInput>();
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+  const onSubmit: SubmitHandler<TodoInput> = (data) => {
+    fetch('https://jsonplaceholder.typicode.com/todos', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: 1,
+        title: data.todo,
+        userId: 2,
+        completed: false,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json));
   };
-  console.log(value);
+
   return (
-    <div className="max-w-[700px] w-[100%]">
-      <div className="flex space-x-[10px]">
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex max-w-[700px] w-full space-x-[10px] items-center"
+      >
         <Input
-          name="full_name"
-          type="text"
-          value={value}
-          onChange={handleChange}
-          className="mt-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white"
+          {...register('todo')}
+          className="w-5/6 py-3 rounded-lg border-none bg-base-60 px-3 text-sm text-white"
         />
-        <Button className="bg-base-80">add todo</Button>
-      </div>
-    </div>
+        <Button className="bg-base-90 w-1/6 text-white rounded-lg py-3" type="submit">
+          add todo
+        </Button>
+      </form>
+    </>
   );
 };
